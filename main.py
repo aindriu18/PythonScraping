@@ -4,7 +4,7 @@ We use it to convert from a string to an object that we can manipulate and use.
 
 Requests allows us to download the HTML
 
-In this case, all we want to grab is any link from Hacker.com that has a vote greater than 100.
+In this case, all we want to grab is any link from Hacker.com that has 100 points (votes) or more.
 """
 
 import requests
@@ -43,6 +43,11 @@ def create_custom_hacker_news(links, votes):
         title = links[index].getText()
         # grabbing the href. If there are none, or link broken, default to None.
         href = links[index].get('href', None)
+        # as this stands, there is a chance that we may encounter a list index out of bounds error.
+        # this is due to the fact that some articles may not have any points (rare, but possible).
+        # therefore, our programme can think there are more article links than article points.
+        # we convert votes to an int and replace the text with an empty string
+        points = int(votes[index].getText().replace(' points', ""))
         # use a dictionary to append title and href link to new list
         news.append({'Article Title': title, "Article Link": href})
 
