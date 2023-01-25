@@ -32,6 +32,11 @@ soup = BeautifulSoup(res.text, 'html.parser')
 article_title = soup.select('.titleline > a')
 subtext = soup.select('.subtext')
 
+
+# function that will organise the output of the articles from highest to lowest.
+def sort_stories_by_votes(news_list):
+    return sorted(news_list, key=lambda k: k['Votes'], reverse=True)
+
 # will receive links and votes
 def create_custom_hacker_news(links, subtext):
 
@@ -64,7 +69,7 @@ def create_custom_hacker_news(links, subtext):
                 # use a dictionary to append title and href link to new list
                 news.append({'Article Title': title, "Article Link": href, 'Votes': points})
 
-    return news
+    return sort_stories_by_votes(news)
 
 # pprint is a module that makes the output easier to reade
 pprint.pprint(create_custom_hacker_news(article_title, subtext))
